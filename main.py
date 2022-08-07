@@ -64,3 +64,17 @@ def get_users():
         cur.execute("SELECT * FROM users")
         rows = cur.fetchall()
 
+        for i in rows:
+            user = {}
+            user["user_id"] = i["user_id"]
+            user["name"] = i["name"]
+            user["email"] = i["email"]
+            user["phone"] = i["phone"]
+            user["address"] = i["address"]
+            user["country"] = i["country"]
+            users.append(user)
+
+    except:
+        users = []
+
+    return users
