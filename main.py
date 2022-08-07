@@ -78,3 +78,9 @@ def get_users():
         users = []
 
     return users
+
+def get_user_by_id(user_id):
+    user = {}
+    conn = connect_to_db()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
