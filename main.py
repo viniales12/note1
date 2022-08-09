@@ -8,7 +8,7 @@ user = {
     "email": "charles@gamil.com",
     "phone": "067765665656",
     "address": "Lui Str, Innsbruck",
-    "country": "Austria"
+    "country": "Italy"
 }
 
 
@@ -91,12 +91,25 @@ def show_db_id(id):
 def delete(id):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute('''DELETE FROM users WHERE user_id == ?''',(id))
+    cur.execute('''DELETE FROM users WHERE user_id == ?''', (id))
 
     conn.commit()
     conn.close()
 
     return 'delete ok'
+
+
+def update(user, id):
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE users SET name = ?, email = ?, phone = ?, address = ?, country = ? WHERE user_id =?",
+                (user["name"], user["email"], user["phone"], user["address"], user["country"], id))
+
+    conn.commit()
+    conn.close()
+
+    return "ok is update"
+
 
 app = Flask(__name__)
 
@@ -115,9 +128,15 @@ def show():
 def show_id(user_id):
     return jsonify(show_db_id(user_id))
 
-@app.route("/delete/<user_id>", methods=['GET','DELETE'])
+
+@app.route("/delete/<user_id>", methods=['GET', 'DELETE'])
 def delete_user(user_id):
     return delete(user_id)
+
+
+@app.route("/update/<user_id>", methods=['GET', 'PUT'])
+def update_user(user_id):
+    return update(user, user_id)
 
 
 app.run()
