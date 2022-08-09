@@ -54,7 +54,7 @@ def show_db():
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    for i in cur.execute("SELECT * FROM users"):
+    for i in cur.execute('''SELECT * FROM users'''):
         user = {}
         user["user_id"] = i["user_id"]
         user["name"] = i["name"]
@@ -75,7 +75,7 @@ def show_db_id(id):
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    for i in cur.execute("SELECT * FROM users WHERE user_id == ?", (id)):
+    for i in cur.execute('''SELECT * FROM users WHERE user_id == ?''', (id)):
         user = {}
         user["user_id"] = i["user_id"]
         user["name"] = i["name"]
@@ -87,9 +87,16 @@ def show_db_id(id):
 
     return users
 
+
 def delete(id):
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute('''DELETE FROM users WHERE user_id == ?''',(id))
 
+    conn.commit()
+    conn.close()
 
+    return 'delete ok'
 
 app = Flask(__name__)
 
@@ -107,6 +114,10 @@ def show():
 @app.route("/show/<user_id>", methods=['GET'])
 def show_id(user_id):
     return jsonify(show_db_id(user_id))
+
+@app.route("/delete/<user_id>", methods=['GET','DELETE'])
+def delete_user(user_id):
+    return delete(user_id)
 
 
 app.run()
