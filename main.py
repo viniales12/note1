@@ -1,13 +1,12 @@
-import json
 import sqlite3
 
 from flask import Flask, jsonify
 
 user = {
-    "name": "Charles Effiong",
+    "name": "Charles Lec",
     "email": "charles@gamil.com",
     "phone": "067765665656",
-    "address": "Lui Str, Innsbruck",
+    "address": "Lui Str, Bolonia",
     "country": "Italy"
 }
 
@@ -44,7 +43,7 @@ def add_user(user):
     conn.commit()
     conn.close()
 
-    return "ok"
+    return f"New User {user['name']} Successfully added"
 
 
 def show_db():
@@ -64,7 +63,6 @@ def show_db():
         user["address"] = i["address"]
         user["country"] = i["country"]
         users.append(user)
-
 
     return users
 
@@ -97,7 +95,7 @@ def delete(id):
     conn.commit()
     conn.close()
 
-    return 'delete ok'
+    return f'User id:{id} Successfully deleted'
 
 
 def update(user, id):
@@ -109,7 +107,7 @@ def update(user, id):
     conn.commit()
     conn.close()
 
-    return "ok is update"
+    return f"User {user['name']} Successfully deleted"
 
 
 app = Flask(__name__)
