@@ -74,7 +74,8 @@ def show_db_id(id):
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    for i in cur.execute('''SELECT * FROM users WHERE user_id == ?''', (id)):
+    for i in cur.execute('''SELECT * FROM users WHERE user_id == ?''', (id,)):
+        # przecinek w (id ,) bardzo ważny, inaczej błąd przy wprowadzeniu liczby dwucyfrowej
         user = {}
         user["user_id"] = i["user_id"]
         user["name"] = i["name"]
@@ -90,7 +91,7 @@ def show_db_id(id):
 def delete(id):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute('''DELETE FROM users WHERE user_id == ?''', (id))
+    cur.execute('''DELETE FROM users WHERE user_id == ?''', (id,))
 
     conn.commit()
     conn.close()
