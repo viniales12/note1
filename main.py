@@ -108,7 +108,7 @@ def update(user, id):
     conn.commit()
     conn.close()
 
-    return f"User {user['name']} Successfully deleted"
+    return f"User {user['name']} Successfully updated"
 
 
 app = Flask(__name__)
