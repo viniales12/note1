@@ -52,6 +52,7 @@ def show_db():
 
     conn = connect_db()
     conn.row_factory = sqlite3.Row
+    #  ^^^^^  umożliwia dostęp do kolumn za pomocą nazw, podczas gdy zwykła krotka wymagałaby użycia indeksów numerowanych
     cur = conn.cursor()
 
     for i in cur.execute('''SELECT * FROM users'''):
@@ -64,8 +65,8 @@ def show_db():
         user["country"] = i["country"]
         users.append(user)
 
-    json_string = json.dumps(users)
-    return json_string
+
+    return users
 
 
 def show_db_id(id):
