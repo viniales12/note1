@@ -27,3 +27,7 @@ def delete_user(user_id):
 @app.route("/update/<user_id>", methods=['GET', 'PUT'])
 def update_user(user_id):
     return update(user, user_id)
+
+@app.route("/", methods=['GET'])
+def hello():
+    return 'Hello'
