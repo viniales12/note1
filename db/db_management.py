@@ -1,8 +1,9 @@
 import sqlite3
+from config import *
 
 
 def connect_db():
-    conn = sqlite3.connect('db/my_db.db')
+    conn = sqlite3.connect(db_address)
     return conn
 
 
