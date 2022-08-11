@@ -1,9 +1,10 @@
 from flask import Flask, jsonify
+
+from config import *
 from db.db_management import Database
-from user import *
 
 app = Flask(__name__)
-data = Database(user_2)
+data = Database(user_choice)
 
 
 @app.route("/add", methods=['GET', 'POST'])
