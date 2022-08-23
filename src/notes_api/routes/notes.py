@@ -62,6 +62,8 @@ def add_note():
     body = req.get('body')
 
     try:
+        if not title or not body:
+            raise NotFoundException(message='Required data is missing')
         note = Note(title=title, body=body)
         db.session.add(note)
         db.session.commit()
@@ -69,7 +71,6 @@ def add_note():
                    'status': 'success',
                    'message': f"Note {title} added successfully!"
                }, 201
-    # TODO: exception to broad, find what exception can be thrown in try block
     except:
         raise InvalidPayload()
 
@@ -89,7 +90,6 @@ def patch_note(note_id: int):
     note.body = request.get_json()["body"]
     db.session.commit()
     return {
-            'status': 'success',
-            'message': "Data has been updated"
-        }
-
+        'status': 'success',
+        'message': "Data has been updated"
+    }
