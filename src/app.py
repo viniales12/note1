@@ -5,6 +5,7 @@ from notes_api.models.note import db
 from notes_api.routes.notes import notes
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///note.db"
 db.init_app(app)
 with app.app_context():
     db.create_all()

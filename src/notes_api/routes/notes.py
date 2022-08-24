@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, make_response
 
 from src.notes_api.models.note import Note, db
 from src.notes_api.routes.common.exceptions import NotFoundException, InvalidPayload
@@ -62,6 +62,8 @@ def add_note():
     body = req.get('body')
 
     try:
+        if not title or not body:
+            raise NotFoundException(message='Required data is missing')
         note = Note(title=title, body=body)
         db.session.add(note)
         db.session.commit()
@@ -69,20 +71,25 @@ def add_note():
                    'status': 'success',
                    'message': f"Note {title} added successfully!"
                }, 201
-    # TODO: exception to broad, find what exception can be thrown in try block
     except:
         raise InvalidPayload()
 
 
 @notes.route('/v1/notes/<note_id>', methods=['DELETE'])
 def delete_note(note_id: int):
-    # TODO: query note like in get note() and delete it
-    pass
+    note = Note.query.get_or_404(note_id)
+    db.session.delete(note)
+    db.session.commit()
+    return make_response("", 204)
 
 
 @notes.route('/v1/notes/<note_id>', methods=['PATCH'])
 def patch_note(note_id: int):
-    # TODO: get body and title like in add_note()
-    # TODO: query note like in get note()
-    # TODO: patch note and commit like in add_note()
-    pass
+    note = Note.query.get_or_404(note_id)
+    note.title = request.get_json()["title"]
+    note.body = request.get_json()["body"]
+    db.session.commit()
+    return {
+        'status': 'success',
+        'message': "Data has been updated"
+    }
